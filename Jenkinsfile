@@ -11,6 +11,11 @@ pipeline {
         nodejs 'node20' 
     }
     
+    // 1. ADD THE ENVIRONMENT BLOCK HERE
+    environment {
+        // This forces Jenkins to use a permanent shared folder for your browsers
+        PLAYWRIGHT_BROWSERS_PATH = 'C:\\PlaywrightCache'
+    }
     stages {
         // REMOVED: The destructive Clean Workspace stage from here
         
