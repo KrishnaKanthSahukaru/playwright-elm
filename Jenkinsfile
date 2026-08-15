@@ -14,7 +14,7 @@ pipeline {
     // 1. ADD THE ENVIRONMENT BLOCK HERE
     environment {
         // This forces Jenkins to use a permanent shared folder for your browsers
-        PLAYWRIGHT_BROWSERS_PATH = 'C:\\PlaywrightCache'
+        PLAYWRIGHT_BROWSERS_PATH = 'C:\\Users\\sahuk\\AppData\\Local\\ms-playwright'
     }
     stages {
         // REMOVED: The destructive Clean Workspace stage from here
