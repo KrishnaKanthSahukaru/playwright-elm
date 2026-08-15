@@ -1,35 +1,33 @@
 pipeline {
     agent any
     
+    options {
+        // This cleans the workspace safely BEFORE the code is checked out from Git
+        skipDefaultCheckout(false)
+        disableConcurrentBuilds()
+    }
+    
     tools {
-        // Tells Jenkins to load the Node configuration we saved earlier
         nodejs 'node20' 
     }
     
     stages {
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
+        // REMOVED: The destructive Clean Workspace stage from here
         
         stage('Install Dependencies') {
             steps {
-                // Installs the exact package versions from your package-lock.json
                 bat 'npm ci'
             }
         }
         
         stage('Install Playwright Browsers') {
             steps {
-                // Downloads the system binaries for chromium, firefox, and webkit
                 bat 'npx playwright install'
             }
         }
         
         stage('Execute Playwright Test Automation Suite') {
             steps {
-                // Prevents a test failure from completely breaking the Jenkins agent cleanup
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     bat 'npx playwright test'
                 }
@@ -39,7 +37,6 @@ pipeline {
     
     post {
         always {
-            // Archives test results to show directly on the build dashboard
             junit allowEmptyResults: true, testResults: 'test-results/**/*.xml'
         }
     }
