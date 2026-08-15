@@ -42,7 +42,18 @@ pipeline {
     
     post {
         always {
+            // 1. Parses the XML file we configured in Step 1 for trends/graphs
             junit allowEmptyResults: true, testResults: 'test-results/**/*.xml'
+            
+            // 2. Publishes the actual visual HTML report to the Jenkins sidebar
+            publishHTML(target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'playwright-report',
+                reportFiles: 'index.html',
+                reportName: 'Playwright HTML Report'
+            ])
         }
     }
 }
