@@ -42,7 +42,7 @@ pipeline {
         stage('Consolidate Shard Reports') {
             steps {
                 // Merges the raw blobs inside 'blob-report' directory into a unified HTML dashboard
-                bat 'npx playwright merge-reports ./blob-report --on-merge html'
+                bat 'npx playwright merge-reports ./blob-report --reporter=html'
             }
         }
     }
