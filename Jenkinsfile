@@ -27,13 +27,13 @@ pipeline {
                 stage('Execute Shard 1') {
                     steps {
                         // Playwright will pick one test file for this shard
-                        bat 'npx playwright test --shard=1/2'
+                        bat 'npx playwright test --shard=1/2 --reporter=blob'
                     }
                 }
                 stage('Execute Shard 2') {
                     steps {
                         // Playwright will pick the other test file for this shard
-                        bat 'npx playwright test --shard=2/2'
+                        bat 'npx playwright test --shard=2/2 --reporter=blob'
                     }
                 }
             }
