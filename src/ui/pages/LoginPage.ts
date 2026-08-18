@@ -3,40 +3,34 @@ import { BasePage } from './BasePage';
 import { Navbar } from '../components/Navbar';
 
 export class LoginPage extends BasePage {
-  // Composition: Injecting the component into the page layout
+  // Layer Composition: Nesting the component layer within the page layout
   public readonly navbar: Navbar;
   
-  // Define locators for page inputs
-  private readonly usernameInput: Locator;
+  private readonly emailInput: Locator;
   private readonly passwordInput: Locator;
   private readonly submitButton: Locator;
-  private readonly errorMessage: Locator;
+  private readonly statusMessage: Locator;
 
   constructor(page: Page) {
-    // Pass the browser page engine up to the parent BasePage
     super(page);
     this.navbar = new Navbar(page);
 
-    // Identify targets using clean, standard locators
-    this.usernameInput = this.page.locator('#username, #userId, input[name="username"]');
-    this.passwordInput = this.page.locator('#password, input[name="password"]');
-    this.submitButton = this.page.locator('button[type="submit"], #loginBtn');
-    this.errorMessage = this.page.locator('.error-message, .alert-danger');
+    // CSS locators mapped directly from the live reqres.in landing sandbox
+    this.emailInput = this.page.locator('#toEmail, input[type="email"], #email').first();
+    this.passwordInput = this.page.locator('#toPassword, input[type="password"], #password').first();
+    this.submitButton = this.page.locator('button:has-text("Login"), .btn-login, button[type="submit"]').first();
+    this.statusMessage = this.page.locator('.response-code, .status-text').first();
   }
 
-  // Page specific user workflows
   async load(): Promise<void> {
-    await this.navigateTo('about:blank');
+    // Dynamically navigate using the global base URL profile configuration rule
+    await this.navigateTo('/');
   }
 
-  async login(user: string, pass: string): Promise<void> {
-    await this.fillField(this.usernameInput, user, 'Username Field');
-    await this.fillField(this.passwordInput, pass, 'Password Field');
-    await this.clickElement(this.submitButton, 'Submit Login Button');
-  }
-
-  async getErrorMessageText(): Promise<string> {
-    await this.errorMessage.waitFor({ state: 'visible' });
-    return this.errorMessage.innerText();
+  async executeLoginWorkflow(email: string, pass: string): Promise<void> {
+    // Leverages our enterprise BasePage wrappers for robust wait states
+    await this.fillField(this.emailInput, email, 'Email Address Input Form');
+    await this.fillField(this.passwordInput, pass, 'Password Entry Input Form');
+    await this.clickElement(this.submitButton, 'Login Submission Action Trigger');
   }
 }
