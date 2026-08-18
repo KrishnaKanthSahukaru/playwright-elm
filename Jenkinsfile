@@ -1,15 +1,17 @@
 pipeline {
     agent any
 
-    environment {
-        // CI/CD Environment Variable Injection (Bypasses the missing local .env file)
-        BASE_URL        = 'https://reqres.in'
-        API_URL         = 'https://reqres.in'
-        ADMIN_USERNAME  = 'eve.holt@reqres.in'
-        // DYNAMIC INJECTION: Pulling sensitive secrets securely from Jenkins Vault at runtime
+        environment {
+        // Secure Enterprise Architecture: Only public configurations are plain text
+        BASE_URL = 'https://reqres.in'
+        API_URL  = 'https://reqres.in'
+        HEADLESS = 'true'
+        
+        // DYNAMIC INJECTION: Pulling sensitive secrets uniquely from Jenkins Vault at runtime
         ADMIN_USERNAME = credentials('PLAYWRIGHT_TEST_USER')
         ADMIN_PASSWORD = credentials('PLAYWRIGHT_TEST_PASS')
     }
+
 
     stages {
         stage('Checkout Repository') {
