@@ -1,9 +1,22 @@
-
-# Playwright
+# Dependencies
 node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
+.pnpm-store/
+
+# Playwright Test Outputs & Artifacts
+test-results/
+playwright-report/
+playwright/.local-browsers/
+allure-results/
+allure-report/
+
+# Environment Secrets
+.env
+.env.*
+!.env.example
 README.md
+
+# Local Editor Caches
+.cache/
+.DS_Store
+.idea/
+.vscode/
