@@ -8,14 +8,14 @@ export class Navbar {
   constructor(page: Page) {
     this.page = page;
     
-    // Highly resilient selectors targeting the corporate branding layout structures
-    this.logo = this.page.locator('.logo, .brand, img[src*="logo"], svg, #header');
-    this.logoutButton = this.page.locator('text=Cancel, text=Log Out, #cancelBtn');
+    // Strict Mode Fix: Target the unique branding logo link element container specifically
+    this.logo = this.page.locator('header a[href="/"], .logo-container img').first();
+    this.logoutButton = this.page.locator('text=Log Out, text=Sign Out').first();
   }
 
   async performLogout(): Promise<void> {
-    console.log('COMPONENT LAYER: Interacting with Navbar component');
-    await this.logoutButton.first().waitFor({ state: 'visible' });
-    await this.logoutButton.first().click();
+    console.log('🧱 COMPONENT LAYER: Interacting with Navbar component');
+    await this.logoutButton.waitFor({ state: 'visible' });
+    await this.logoutButton.click();
   }
 }
