@@ -44,7 +44,7 @@ pipeline {
             
             // 7. REPORTING: Fallback native compilation command (Bypasses custom plugin dependencies)
             // This reads your allure-results folder and bundles it into an HTML page cleanly
-            bat 'npx allure generate allure-results --clean -o allure-report'
+            bat 'bat 'npx allure generate allure-results --output allure-report'
             
             // Archive the generated interactive visual dashboard folder straight to your build artifacts panel
             archiveArtifacts artifacts: 'allure-report/**/*', allowEmptyArchive: true
