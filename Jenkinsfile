@@ -6,8 +6,9 @@ pipeline {
         BASE_URL        = 'https://reqres.in'
         API_URL         = 'https://reqres.in'
         ADMIN_USERNAME  = 'eve.holt@reqres.in'
-        ADMIN_PASSWORD  = 'cityslicka'
-        HEADLESS        = 'true'
+        // DYNAMIC INJECTION: Pulling sensitive secrets securely from Jenkins Vault at runtime
+        ADMIN_USERNAME = credentials('PLAYWRIGHT_TEST_USER')
+        ADMIN_PASSWORD = credentials('PLAYWRIGHT_TEST_PASS')
     }
 
     stages {
