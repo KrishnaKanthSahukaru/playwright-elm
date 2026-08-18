@@ -2,7 +2,7 @@ pipeline {
     agent any
 
         environment {
-        // Secure Enterprise Architecture: Only public configurations
+        // Secure Enterprise Architecture: Only public configurations are plain text
         BASE_URL = 'https://reqres.in'
         API_URL  = 'https://reqres.in'
         HEADLESS = 'true'
