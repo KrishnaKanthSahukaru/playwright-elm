@@ -37,13 +37,17 @@ pipeline {
 
     post {
         always {
-            echo 'Post-Execution Pipeline: Harvesting Allure Reports & Fail Artifacts...'
+            echo '📊 Post-Execution Pipeline: Harvesting Allure Reports & Fail Artifacts...'
             
-            // 7. ARTIFACTS: Archive videos, traces, and failure screenshots for stakeholders
+            // 7. ARTIFACTS: Archive videos, traces, and screenshots natively
             archiveArtifacts artifacts: 'playwright-report/**/*, test-results/**/*', allowEmptyArchive: true
             
-            // 7. REPORTING: Publish the interactive Allure Dashboard straight to Jenkins Dashboard UI
-            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+            // 7. REPORTING: Fallback native compilation command (Bypasses custom plugin dependencies)
+            // This reads your allure-results folder and bundles it into an HTML page cleanly
+            bat 'npx allure generate allure-results --clean -o allure-report'
+            
+            // Archive the generated interactive visual dashboard folder straight to your build artifacts panel
+            archiveArtifacts artifacts: 'allure-report/**/*', allowEmptyArchive: true
         }
     }
 }
