@@ -2,8 +2,12 @@ pipeline {
     agent any
 
     environment {
-        // CI/CD Environment Variable Injection
-        HEADLESS = 'true'
+        // CI/CD Environment Variable Injection (Bypasses the missing local .env file)
+        BASE_URL        = 'https://reqres.in'
+        API_URL         = 'https://reqres.in'
+        ADMIN_USERNAME  = 'eve.holt@reqres.in'
+        ADMIN_PASSWORD  = 'cityslicka'
+        HEADLESS        = 'true'
     }
 
     stages {
