@@ -35,16 +35,15 @@ pipeline {
         }
     }
 
-    post {
+        post {
         always {
             echo '📊 Post-Execution Pipeline: Harvesting Allure Reports & Fail Artifacts...'
             
             // 7. ARTIFACTS: Archive videos, traces, and screenshots natively
             archiveArtifacts artifacts: 'playwright-report/**/*, test-results/**/*', allowEmptyArchive: true
             
-            // 7. REPORTING: Fallback native compilation command (Bypasses custom plugin dependencies)
-            // This reads your allure-results folder and bundles it into an HTML page cleanly
-            bat 'bat 'npx allure generate allure-results --output allure-report'
+            // 7. REPORTING: Keep this command exactly on ONE single continuous processing line!
+            bat 'npx allure generate allure-results --output allure-report'
             
             // Archive the generated interactive visual dashboard folder straight to your build artifacts panel
             archiveArtifacts artifacts: 'allure-report/**/*', allowEmptyArchive: true
