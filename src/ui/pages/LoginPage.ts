@@ -26,7 +26,7 @@ export class LoginPage extends BasePage {
 
   // Page specific user workflows
   async load(): Promise<void> {
-    await this.navigateTo('/');
+    await this.navigateTo('about:blank');
   }
 
   async login(user: string, pass: string): Promise<void> {
