@@ -9,7 +9,6 @@ export class LoginPage extends BasePage {
   private readonly emailInput: Locator;
   private readonly passwordInput: Locator;
   private readonly submitButton: Locator;
-  private readonly statusMessage: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -19,12 +18,15 @@ export class LoginPage extends BasePage {
     this.emailInput = this.page.locator('#toEmail, input[type="email"], #email').first();
     this.passwordInput = this.page.locator('#toPassword, input[type="password"], #password').first();
     this.submitButton = this.page.locator('button:has-text("Login"), .btn-login, button[type="submit"]').first();
-    this.statusMessage = this.page.locator('.response-code, .status-text').first();
   }
 
   async load(): Promise<void> {
     // Dynamically navigate using the global base URL profile configuration rule
-    await this.navigateTo('about:blank');
+    await this.navigateTo('/');
+  }
+
+  async getTitle(): Promise<string> {
+    return this.page.title();
   }
 
   async executeLoginWorkflow(email: string, pass: string): Promise<void> {

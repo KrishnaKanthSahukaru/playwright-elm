@@ -6,6 +6,7 @@ pipeline {
         BASE_URL = 'https://reqres.in'
         API_URL  = 'https://reqres.in'
         HEADLESS = 'true'
+        API_MODE = 'mock'
         
         // DYNAMIC INJECTION: Pulling sensitive secrets uniquely from Jenkins Vault at runtime
         ADMIN_USERNAME = credentials('PLAYWRIGHT_TEST_USER')
@@ -31,9 +32,10 @@ pipeline {
 
         stage('Execute Automation Matrix') {
             steps {
-                echo 'Running complete structural validation suite via Playwright Test Runner Engine...'
-                // Run all tests and prevent build failures from terminating report extraction stages
-                bat 'npx playwright test'
+                echo 'Running API-first contract suite and UI smoke coverage...'
+                bat 'npm run typecheck'
+                bat 'npm run test:smoke'
+                bat 'npm run test:regression'
             }
         }
     }

@@ -15,3 +15,6 @@ export const uiTest = baseTest.extend<UiFixtures>({
     await use(loginPage);
   },
 });
+
+export { expect } from '@playwright/test';
+export const test = uiTest;

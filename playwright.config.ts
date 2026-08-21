@@ -21,6 +21,12 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
   },
 
+  webServer: {
+    command: 'node src/test-support/mock-api.server.js',
+    url: 'http://127.0.0.1:3100/health',
+    reuseExistingServer: true,
+  },
+
   projects: [
     {
       name: 'chromium',

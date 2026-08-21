@@ -1,29 +1,23 @@
-import { test, expect } from '../../fixtures/base.fixtures';
+import { test, expect } from '../../fixtures/api.fixtures';
 import { globalData } from '../../data/uat/global.data';
 
-test.describe('API Layer Architecture Suite', () => {
+test.describe('User API contract suite', () => {
   
-  test('Verify user creation through backend endpoint [@api @smoke]', async ({ userClient }) => {
-    // Pull input payload structure straight out of the Test Data Layer
+  test('creates a user through the API [@api @smoke]', async ({ userClient }) => {
     const payload = globalData.newUser;
-
-    // Trigger transaction via the clean architectural API Layer client block
     const response = await userClient.createUserAccount(payload);
-    
-    expect(response.status()).toBe(201);
-    const responseBody = await response.json();
-    
-    console.log(`🚀 [TEST RUNNER]: Profile creation verified. Account ID: ${responseBody.id}`);
-    expect(responseBody.name).toBe(payload.name);
-    expect(responseBody.job).toBe(payload.job);
+
+    expect(response.id).toBeTruthy();
+    expect(response.name).toBe(payload.name);
+    expect(response.job).toBe(payload.job);
+    expect(Date.parse(response.createdAt)).not.toBeNaN();
   });
 
-  test('Verify user list pagination retrieval [@api @regression]', async ({ userClient }) => {
+  test('returns a paginated user list [@api @regression]', async ({ userClient }) => {
     const response = await userClient.getUsersList(2);
-    
-    expect(response.status()).toBe(200);
-    const responseBody = await response.json();
-    expect(responseBody.page).toBe(2);
-    expect(responseBody.data.length).toBeGreaterThan(0);
+
+    expect(response.page).toBe(2);
+    expect(response.data.length).toBeGreaterThan(0);
+    expect(response.total_pages).toBeGreaterThanOrEqual(response.page);
   });
 });

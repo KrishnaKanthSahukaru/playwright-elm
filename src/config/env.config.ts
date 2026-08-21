@@ -6,8 +6,10 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 export interface EnvironmentConfig {
   baseUrl: string;
   apiUrl: string;
-  adminUser: string;
-  adminPass: string;
+  apiKey?: string;
+  apiMode: 'mock' | 'real';
+  adminUser?: string;
+  adminPass?: string;
   headless: boolean;
 }
 
@@ -21,9 +23,12 @@ const getEnvVariable = (key: string): string => {
 
 export const Config: EnvironmentConfig = {
   baseUrl: getEnvVariable('BASE_URL'),
-  // Architectural Guard: Ensure the API path explicitly includes the subpath structure securely
-  apiUrl: getEnvVariable('API_URL').endsWith('/api') ? getEnvVariable('API_URL') : `${getEnvVariable('API_URL')}/api`,
-  adminUser: getEnvVariable('ADMIN_USERNAME'),
-  adminPass: getEnvVariable('ADMIN_PASSWORD'),
-  headless: getEnvVariable('HEADLESS') === 'true',
+  apiUrl: (process.env.API_MODE ?? 'mock') === 'mock'
+    ? 'http://127.0.0.1:3100'
+    : (getEnvVariable('API_URL').endsWith('/api') ? getEnvVariable('API_URL') : `${getEnvVariable('API_URL')}/api`),
+  apiKey: process.env.API_KEY,
+  apiMode: process.env.API_MODE === 'real' ? 'real' : 'mock',
+  adminUser: process.env.ADMIN_USERNAME,
+  adminPass: process.env.ADMIN_PASSWORD,
+  headless: process.env.HEADLESS !== 'false',
 };
